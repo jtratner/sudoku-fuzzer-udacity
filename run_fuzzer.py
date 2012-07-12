@@ -42,6 +42,5 @@ if __name__ == '__main__':
         except AttributeError:
             raise AttributeError("Module {mod} has no function"
                     "`solve_sudoku`".format(mod=mod_name))
-    print args_dict
     fuzz_it(**args_dict)
 
