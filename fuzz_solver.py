@@ -9,6 +9,28 @@ valid = [[5,3,4,6,7,8,9,1,2],
          [2,8,7,4,1,9,6,3,5],
          [3,4,5,2,8,6,1,7,9]]
 
+# test cases with no solution
+no_soln1 = [
+[1,2,3,4,5,6,7,8,0],
+[0,0,0,0,0,0,0,0,9],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0]]
+
+no_soln2 = [
+[1, 2, 3, 0, 0, 0, 0, 0, 0],
+[4, 5, 0, 0, 0, 0, 6, 0, 0],
+[0, 0, 0, 6, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0]]
 import random
 
 # Make a copy of a grid so we can modify it without touching the original
@@ -18,6 +40,7 @@ def copy (grid):
 # Assert than a solution remains solvable after mutates-many moves are undone.
 # Run iters-many tests of this nature.
 def fuzz_solution(soln, mutates, iters, check_sudoku, solve_sudoku):
+    """ fuzzes a given *valid* solution """
     random.seed()
     for i in range(iters):
         board = copy(soln)
@@ -33,6 +56,16 @@ def fuzz_solution(soln, mutates, iters, check_sudoku, solve_sudoku):
         # If it's unsolvable the solver screwed up
         assert solve_sudoku(board), "Solver failed to solve board {board}".format(board=board)
     return True
-def fuzz_solver(check_sudoku, solve_sudoku, mutates=10, iters=10, soln=None):
+
+def check_no_valid_solns(solve_sudoku, tests=None):
+    """ runs solver against cases with no solution"""
+    tests = tests or [no_soln1, no_soln2]
+    for test in tests:
+        res = solve_sudoku(test)
+        assert res is False, """Solver failed to return False for valid, but unsolveable sudoku. 
+Returned {res} instead. Input was: {test}""".format(test=test, res=res)
+    return True
+
+def fuzz_solver(check_sudoku, solve_sudoku, mutates=10, iters=10, soln=None, tests=None):
     soln = soln or valid
-    return fuzz_solution(valid, mutates, iters, check_sudoku, solve_sudoku)
+    return check_no_valid_solns(solve_sudoku, tests) and fuzz_solution(valid, mutates, iters, check_sudoku, solve_sudoku)
