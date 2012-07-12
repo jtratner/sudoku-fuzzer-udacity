@@ -1,11 +1,13 @@
 def fuzz_it(check_sudoku=None, solve_sudoku=None, test="all", iters=10,
-        mutations=10):
+        mutations=10, check_edges=None):
     if test in ("all", "checker"):
         from fuzz_checker import fuzz_checker
-        success = fuzz_checker(check_sudoku)
+        success = fuzz_checker(check_sudoku, check_edges)
         if not success:
             print "Failed fuzzing of sudoku checker"
             return
+        else:
+            print "Sudoku checker passed all tests!"
     if test in ("all", "solver"):
         from fuzz_solver import fuzz_solver
         success = fuzz_solver(check_sudoku, solve_sudoku, iters=iters,
@@ -13,6 +15,8 @@ def fuzz_it(check_sudoku=None, solve_sudoku=None, test="all", iters=10,
         if not success:
             print "Failed fuzzing of sudoku solver"
             return
+        else:
+            print "Sudoku solver passed all tests!"
 
 if __name__ == '__main__':
     try:

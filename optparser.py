@@ -9,6 +9,7 @@ parser.add_option("-m", "--mutations", help="""set number of
         mutations for solver fuzzer""", default=20)
 parser.add_option("--iters", help="""set number of
 iterations for solver fuzzer""", default=10)
+parser.add_option("--no-strict", help="disable strict checking (e.g. 5.0, True, False, etc)", action="store_false", dest="check_edges", default=True)
 def get_args():
     options, args = parser.parse_args()
     if len(args) < 1:
@@ -16,9 +17,11 @@ def get_args():
     options_dict = dict(
             test = options.test,
             solver_file = args[0],
+            check_edges = options.check_edges
             )
     for argname in ("mutations", "iters"):
         if hasattr(options, argname):
             options_dict[argname] = getattr(options, argname)
     return options_dict
+
 

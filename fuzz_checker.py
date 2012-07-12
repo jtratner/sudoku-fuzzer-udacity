@@ -41,10 +41,10 @@ fpgd2 = [[2,9,0,0,0,0,0,7,0],
         [7,0,0,0,9,0,0,0,1],
         [0,0,1,2,0,0,3,0,6],
         [0,3,0,0,0,0,0,5,9]]
-def fuzz_checker(check_sudoku):
-    sanity_check_the_checker(check_sudoku)
+def fuzz_checker(check_sudoku, check_edges):
+    sanity_check_the_checker(check_sudoku, check_edges)
     return True
-def sanity_check_the_checker(sudoku_checker):
+def sanity_check_the_checker(sudoku_checker, check_edges):
     """ given `sudoku_checker` a sudoku checker function, attempts to ferret out common issues with checking
     for valid input.  Raises AssertionError s if the function fails to conform to expectations"""
     try:
@@ -53,6 +53,7 @@ def sanity_check_the_checker(sudoku_checker):
                 [valid_row] * 8 + [[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]], fpgd]
         illegal.append([[0] * 9] * 8 + [set(range(9))])
         invalid = ([[1]*9] * 9, bad_subgrid) 
+        edges = [fpgd2, boolg]
         for s in illegal:
             res = sudoku_checker(s) 
             assert res is None, "Failed to detect that {s} was illegal. Returned {res} instead of `None`".format(s=s, res=res)
@@ -64,6 +65,10 @@ def sanity_check_the_checker(sudoku_checker):
             s = base[:i]
             res = sudoku_checker(s)
             assert res is None, "Failed to detect that {s} was illegal. Returned {res} instead of `None`".format(s=s, res=res)
+        if check_edges:
+            for s in edges:
+                res = sudoku_checker(s)
+                assert res is None, "Checker failed to detect that {s} was illegal. Returned {res} instead of `None`".format(res=res, s=s)
     except AssertionError:
         raise
     except Exception as e:
