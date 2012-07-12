@@ -32,5 +32,6 @@ def fuzz_solution(soln, mutates, iters, check_sudoku, solve_sudoku):
         assert check_sudoku(board), "Input checker failed with input {board}".format(board=board)
         # If it's unsolvable the solver screwed up
         assert solve_sudoku(board), "Solver failed to solve board {board}".format(board=board)
-def fuzz_solver(check_sudoku, solve_sudoku):
-    fuzz_solution(valid, 10, 10, check_sudoku, solve_sudoku)
+def fuzz_solver(check_sudoku, solve_sudoku, mutates=10, iters=10, soln=None):
+    soln = soln or valid
+    fuzz_solution(valid, mutates, iters, check_sudoku, solve_sudoku)

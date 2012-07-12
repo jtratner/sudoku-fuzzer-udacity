@@ -1,4 +1,5 @@
-def fuzz_it(check_sudoku=None, solve_sudoku=None, test="all"):
+def fuzz_it(check_sudoku=None, solve_sudoku=None, test="all", iters=10,
+        mutations=10):
     if test in ("all", "checker"):
         from fuzz_checker import fuzz_checker
         success = fuzz_checker(check_sudoku)
@@ -7,15 +8,15 @@ def fuzz_it(check_sudoku=None, solve_sudoku=None, test="all"):
             return
     if test in ("all", "solver"):
         from fuzz_solver import fuzz_solver
-        success = fuzz_solver(check_sudoku, solve_sudoku)
+        success = fuzz_solver(check_sudoku, solve_sudoku, iters=iters,
+                mutates=mutations)
         if not success:
             print "Failed fuzzing of sudoku solver"
             return
 
 if __name__ == '__main__':
     try:
-        # from argparser import get_args
-        raise ImportError
+        from argparser import get_args
     except ImportError:
         try:
             from optparser import get_args
@@ -41,5 +42,6 @@ if __name__ == '__main__':
         except AttributeError:
             raise AttributeError("Module {mod} has no function"
                     "`solve_sudoku`".format(mod=mod_name))
+    print args_dict
     fuzz_it(**args_dict)
 
