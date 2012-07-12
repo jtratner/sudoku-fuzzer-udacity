@@ -19,7 +19,17 @@ fpgd = [[2,9,0,0,0,0,0,7,0],
         [7,0,0,0,9,0,0,0,1],
         [0,0,1,2,0,0,3,0,6],
         [0,3,0,0,0,0,0,5,9]]
-
+# bool grid again from Goldsong. not included by default, because
+# honestly it's not clear that it's wrong.
+boolg = [[2,9,0,0, False, 0,0,7,0],
+        [3,0,6,0,0,8,4,0,0],
+        [8,0,0,0,4,0,0,0,2],
+        [0,2,0,0,3,1,0,0,7],
+        [0,0,0,0,8,0,0,0,0],
+        [1,0,0,9,5,0,0,6,0],
+        [7,0,0,0,9,0,0,0,1],
+        [0,0,1,2,0,0,3,0,6],
+        [0,3,0,0,0,0,0,5,9]]
 # this one is also from Goldsong, not included by default
 # totally dependent on whether you think that floating point numbers should be excluded or not
 fpgd2 = [[2,9,0,0,0,0,0,7,0],
