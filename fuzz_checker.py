@@ -8,7 +8,7 @@ def sanity_check_the_checker(sudoku_checker):
         valid_row = range(1, 10)
         illegal = [0, [], range(10), [valid_row, valid_row, 0, range(9), 1, range(9), range(9), valid_row, valid_row],
                 [valid_row] * 8 + [[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]]]
-        illegal.append([[0] * 9] * 9 + [set(range(9))])
+        illegal.append([[0] * 9] * 8 + [set(range(9))])
         invalid = ([[1]*9] * 9,) 
         for s in illegal:
             res = sudoku_checker(s) 
