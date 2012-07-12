@@ -33,3 +33,7 @@ Original solution mutator -- by Brandon on Udacity.
 
 Checker fuzzer - written by Jeffrey Tratner (+ inspired by fuzzer test cases from
 Bill Barry and Brandon)
+
+License
+-------
+Freely provided under the MIT License
