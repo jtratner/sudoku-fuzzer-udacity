@@ -1,5 +1,6 @@
 def fuzz_checker(check_sudoku):
     sanity_check_the_checker(check_sudoku)
+    return True
 def sanity_check_the_checker(sudoku_checker):
     """ given `sudoku_checker` a sudoku checker function, attempts to ferret out common issues with checking
     for valid input.  Raises AssertionError s if the function fails to conform to expectations"""
