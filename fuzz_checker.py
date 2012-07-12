@@ -1,4 +1,6 @@
-def fuzz_checker(sudoku_checker):
+def fuzz_checker(check_sudoku):
+    sanity_check_the_checker(check_sudoku)
+def sanity_check_the_checker(sudoku_checker):
     """ given `sudoku_checker` a sudoku checker function, attempts to ferret out common issues with checking
     for valid input.  Raises AssertionError s if the function fails to conform to expectations"""
     try:
@@ -11,6 +13,11 @@ def fuzz_checker(sudoku_checker):
         for s in invalid:
             res = sudoku_checker(s)
             assert res is False, "Failed to return False for invalid sudoku {s}. Returned {res} instead of `False`".format(s=s, res=res)
+        base = [[0] * 9] * 9
+        for i in range(9):
+            s = base[:i]
+            res = sudoku_checker(s)
+            assert res is None, "Failed to detect that {s} was illegal. Returned {res} instead of `None`".format(s=s, res=res)
     except AssertionError:
         raise
     except Exception as e:
