@@ -31,7 +31,73 @@ no_soln2 = [
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0],
 [0, 0, 0, 0, 0, 0, 0, 0, 0]]
-import random
+import random, time
+
+squares = [(i,j) for i in range(9) for j in range(9)]
+units = dict(((i,j), [[(i,k) for k in range(9)]] + 
+              [[(k,j) for k in range(9)]] + 
+              [[(k,l) for k in range(i/3*3, i/3*3+3) for l in range(j/3*3, j/3*3+3)]]) 
+             for (i,j) in squares)
+peers = dict((s, set(sum(units[s], [])) - set([s]))
+             for s in squares)
+
+def erase(board, i, j, d):
+    if d not in board[i][j]:
+        return board
+    board[i][j] = board[i][j].replace(d, '')
+    if len(board[i][j]) == 0:
+        return False # contradiction
+    elif len(board[i][j]) == 1:
+        d2 = board[i][j]
+        if not all(erase(board, i1, j1, d2) for (i1, j1) in peers[i,j]):
+            return False
+    for unit in units[i,j]:
+        numplaces = [(i1, j1) for (i1, j1) in unit if d in board[i1][j1]]
+        if len(numplaces) == 0:
+            return False
+        elif len(numplaces) == 1:
+            if not assign(board, numplaces[0][0], numplaces[0][1], d):
+                return False
+    return board
+
+def assign(board, i, j, d):
+    if all(erase(board, i, j, d2) for d2 in board[i][j].replace(d, '')):
+        return board
+    else:
+        return False
+
+def random_sudoku(N = 30):
+    board = [['123456789' for _ in range(9)] for _ in range(9)]
+    cells = [s for s in squares]
+    random.shuffle(cells)
+    for cell in cells:
+        i,j = cell
+        if not assign(board, i, j, random.choice(board[i][j])):
+            break
+        ds = [board[i][j] for i in range(9) for j in range(9) if len(board[i][j]) == 1]
+        if len(ds) >= N and len(set(ds)) >= 8:
+            return [map(lambda v: int(v) if len(v) == 1 else 0, row) for row in board]
+    return random_sudoku(N)
+
+def check_random_solns(solve_sudoku, check_sudoku, mutates, iters):
+    random.seed()
+    solved = 0
+    fraction = 0.9
+    for i in range(iters):
+        # Generate a valid random board
+        board = random_sudoku(mutates)
+        bd = ''.join(''.join(map(lambda n: str(n), row)) for row in board)
+        # If it's unsolvable the solver screwed up
+        start = time.clock()
+        soln = solve_sudoku(board)
+        if soln is not None and soln is not False:
+            solved += 1
+        t = time.clock() - start
+        if t > 5.0: 
+            print "board[%d] %s took (%.2f seconds)" % (i, bd, t)
+    assert solved > (fraction * iters), "Your solver failed on more than %.1f%% of random boards!" % (100*fraction)
+    print "Your solver completed %d / %d random boards! Congrats!" % (solved, iters)
+    return True        
 
 # Make a copy of a grid so we can modify it without touching the original
 def copy (grid):
@@ -68,4 +134,4 @@ Returned {res} instead. Input was: {test}""".format(test=test, res=res)
 
 def fuzz_solver(check_sudoku, solve_sudoku, mutates=10, iters=10, soln=None, tests=None):
     soln = soln or valid
-    return check_no_valid_solns(solve_sudoku, tests) and fuzz_solution(valid, mutates, iters, check_sudoku, solve_sudoku)
+    return check_no_valid_solns(solve_sudoku, tests) and fuzz_solution(valid, mutates, iters, check_sudoku, solve_sudoku) and check_random_solns(solve_sudoku, check_sudoku, mutates, iters)
