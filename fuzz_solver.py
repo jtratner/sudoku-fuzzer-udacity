@@ -109,14 +109,14 @@ def transpose(grid):
 # Permutes the row/column with another row/column in the same range
 # (i.e. 6 with 6-8, 0 with 0-2, etc.)
 def permute(grid, i, row=True):
-    if not row: grid = map(list, zip(*grid))
+    if not row: grid = transpose(grid)
     j = random.choice(range(i/3*3, i/3*3+3))
     grid[j], grid[i] = grid[i], grid[j]
     return grid if row else transpose(grid)
 
 # Permutes the row/column blocks (i.e. 0-2 with 6-8)
 def permute_block(grid, i, row=True):
-    if not row: grid = map(list, zip(*grid))
+    if not row: grid = transpose(grid)
     bi = i*3
     bj = random.choice(range(3))*3
     for offset in range(3):
@@ -125,7 +125,7 @@ def permute_block(grid, i, row=True):
 
 # Reflects the board along the horizontal or vertical axis
 def reflect(grid, horizontal=True):
-    if not horizontal: grid = map(list, zip(*grid))
+    if not horizontal: grid = transpose(grid)
     for i in range(9): grid[i].reverse()
     return grid if horizontal else transpose(grid)
 
