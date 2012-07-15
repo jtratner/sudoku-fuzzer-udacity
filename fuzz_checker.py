@@ -43,7 +43,7 @@ fpgd2 = [[2,9,0,0,0,0,0,7,0],
         [0,3,0,0,0,0,0,5,9]]
 
 # negative entries in grid
-fpgd3 = [[2,9,0,0,0,0,0,7,0],
+neggd = [[2,9,0,0,0,0,0,7,0],
         [3,0,6,0,0,8,4,0,0],
         [8,0,0,0,4,0,0,0,2],
         [0,2,0,0,3,1,0,0,7],
@@ -62,9 +62,9 @@ def sanity_check_the_checker(sudoku_checker, check_edges):
     try:
         valid_row = range(1, 10)
         illegal = [0, [], range(10), [valid_row, valid_row, 0, range(9), 1, range(9), range(9), valid_row, valid_row],
-                [valid_row] * 8 + [[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]], fpgd]
+                [valid_row] * 8 + [[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]], fpgd, neggd]
         illegal.append([[0] * 9] * 8 + [set(range(9))])
-        invalid = ([[1]*9] * 9, bad_subgrid, fpgd3) 
+        invalid = ([[1]*9] * 9, bad_subgrid) 
         edges = [fpgd2, boolg]
         for s in illegal:
             res = sudoku_checker(s) 
