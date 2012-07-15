@@ -34,6 +34,8 @@ Original solution mutator -- by Brandon on Udacity.
 Checker fuzzer - written by Jeffrey Tratner (+ inspired by fuzzer test cases from
 Bill Barry and Brandon)
 
+Random testers contributed by Kedar Bellare (Generation-based and Transformation-based)
+
 Tricky example of a fail-in-subgrid-only grid and a grid with floating point numbers from Goldsong
 
 License
