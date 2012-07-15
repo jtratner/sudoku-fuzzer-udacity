@@ -14,6 +14,13 @@ To run, clone/download/whatever the repo, then run:
 
 And the program will attempt to fuzz your solver and checker.
 
+Command line options:
+
+1. --test | lets you choose which tests to run (checker, solver, or both)
+2. --no-strict | doesn't run tests checking for False/floating point
+3. --mutations | set number of mutations (number of little changes to make) for checker fuzzer
+4. --iters | set number of iterations for fuzz_solver (basically, just impacts the amount of time)
+
 Compatibility
 -------------
 
@@ -31,13 +38,14 @@ Credits
 
 Original solution mutator -- by Brandon on Udacity.
 
-Checker fuzzer - written by Jeffrey Tratner (+ inspired by fuzzer test cases from
+Test runner, checker fuzzer and some no-solution sudoku - written by Jeffrey Tratner (+ inspired by fuzzer test cases from
 Bill Barry and Brandon)
 
-Random testers contributed by Kedar Bellare (Generation-based and Transformation-based)
+Great refactoring + random testers contributed by Kedar Bellare (Generation-based and Transformation-based)
 
 Tricky example of a fail-in-subgrid-only grid and a grid with floating point numbers from Goldsong
 
 License
 -------
 Freely provided under the MIT License
+
