@@ -51,7 +51,7 @@ def erase(board, i, j, d):
         d2 = board[i][j]
         if not all(erase(board, i1, j1, d2) for (i1, j1) in peers[i,j]):
             return False
-    for unit in units[i,j]:
+    for unit in units[(i,j)]:
         numplaces = [(i1, j1) for (i1, j1) in unit if d in board[i1][j1]]
         if len(numplaces) == 0:
             return False
