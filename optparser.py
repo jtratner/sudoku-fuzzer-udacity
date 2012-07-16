@@ -21,7 +21,7 @@ def get_args():
             )
     for argname in ("mutations", "iters"):
         if hasattr(options, argname):
-            options_dict[argname] = getattr(options, argname)
+            options_dict[argname] = int(getattr(options, argname))
     return options_dict
 
 
